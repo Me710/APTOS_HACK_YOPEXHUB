@@ -1,4 +1,3 @@
-```
 # Rust WebAssembly Project with Yew and Aptos Integration
 
 This project is a web application built using Rust, WebAssembly, and the Yew framework, with integration for the Aptos blockchain.
