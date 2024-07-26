@@ -1,6 +1,4 @@
-Certainly! Integrating Aptos into your Rust WebAssembly project is a great idea. Here's an updated README that includes steps for integrating Aptos, along with some modifications to your project structure:
-
-```markdown
+```
 # Rust WebAssembly Project with Yew and Aptos Integration
 
 This project is a web application built using Rust, WebAssembly, and the Yew framework, with integration for the Aptos blockchain.
