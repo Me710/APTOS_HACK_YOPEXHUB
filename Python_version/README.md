@@ -1,4 +1,4 @@
-# Yopex Project
+# Yopex Aptos - Project's Marketplace
 
 This project is a Python implementation of the Yopex smart contract on the Aptos blockchain. It demonstrates creating projects, listing projects, and buying projects between users using the Aptos SDK.
 
@@ -60,11 +60,12 @@ A config/config.yaml will be generated having your private and public keys..
 
 Update the `src/utils/constants.py` file with your Aptos module address and other necessary constants:
 
-```python
+```
 NODE_URL = "https://fullnode.devnet.aptoslabs.com/v1"
 FAUCET_URL = "https://faucet.devnet.aptoslabs.com"
 YOPEX_MODULE_ADDRESS = "your_module_address_here"
 YOPEX_MODULE_NAME = "yopex"
+```
 
 In main.py, update Alice's private key:
 
