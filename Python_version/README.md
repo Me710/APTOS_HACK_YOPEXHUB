@@ -8,11 +8,28 @@ This project is a Python implementation of the Yopex smart contract on the Aptos
 - pip (Python package installer)
 - Git
 
-## Clone the Repository
+## 1 - Clone the Repository
 
 To get started, clone the repository to your local machine:
 
-```https://github.com/Me710/APTOS_HACK_YOPEXHUB.git```
+```
+   git clone https://github.com/Me710/APTOS_HACK_YOPEXHUB.git
+   cd APTOS_HACK_YOPEXHUB\Python_version
+```
 
-then 
-```cd APTOS_HACK_YOPEXHUB\Python_version```
+## 2 - Set Up a Virtual Environment (Optional but Recommended)
+
+
+```
+   python -m venv env
+```
+
+Activate the virtual environement
+- On mac/linux
+```
+source venv/bin/activate
+```
+- On windows
+```
+env\activate\Scripts
+```
