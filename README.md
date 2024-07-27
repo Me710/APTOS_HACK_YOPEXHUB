@@ -1,6 +1,20 @@
-# Rust WebAssembly Project with Yew and Aptos Integration
+# YOPEX APTOS Project - HACKATON VERSION 
 
-This project is a web application built using Rust, WebAssembly, and the Yew framework, with integration for the Aptos blockchain.
+This repo contains two (2) POC (Prove Of Concept) implementations of APTOS blockchain to enhance [YOPEX Plateform](https://yopexhub.com).
+
+   - A Python-based Smart Contract implementation of Project creation, listing and buying amongt users on the plateform.
+
+   - A Rust-based NFT creation with APTOS: It purpose is to timestamp and asure project ownership thanks to blockchain. This POC is built using Rust, WebAssembly, and the Yew framework, with integration for the Aptos blockchain.
+
+   
+
+The two Blockchain features together will assure an authencity project ownership garantee and a social interaction with other participants through projects transactions or marketplace.
+
+# Building the PYTHON-BASED SMART-CONTRACT POC
+
+   - Check the [README.MD](https://github.com/Me710/APTOS_HACK_YOPEXHUB/tree/main/Python_version) in the Python version [folder](https://github.com/Me710/APTOS_HACK_YOPEXHUB/tree/main/Python_version) 
+
+# Building the RUST-BASED NFT POC
 
 ## Prerequisites
 
