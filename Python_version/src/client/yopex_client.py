@@ -1,50 +1,27 @@
+# src/client/yopex_client.py
 from aptos_sdk.account import Account
 from aptos_sdk.client import RestClient
-from aptos_sdk.transactions import EntryFunction, TransactionArgument, TransactionPayload
-from aptos_sdk.type_tag import TypeTag, StructTag
-from src.utils.constants import YOPEX_MODULE_ADDRESS, YOPEX_MODULE_NAME
+from aptos_sdk.transactions import EntryFunction, TransactionArgument
+from aptos_sdk.bcs import Serializer
+
 
 class YopexClient:
-    def __init__(self, account: Account, rest_client: RestClient):
+    def __init__(self, account: Account, client: RestClient):
         self.account = account
-        self.rest_client = rest_client
+        self.client = client
 
-    async def create_project(self, name: str, description: str, price: int):
-        payload = EntryFunction(
-            f"{YOPEX_MODULE_ADDRESS}::{YOPEX_MODULE_NAME}",
-            "create_project",
-            [],
+    async def pay_for_project(self, recipient: str, amount: int):
+        payload = EntryFunction.natural(
+            "0x1::coin",  # The Coin module in the Aptos standard library
+            "transfer",
+            [TransactionArgument("0x1::aptos_coin::AptosCoin", Serializer.struct)],  # Type argument for AptosCoin
             [
-                TransactionArgument(name, Seq[U8]),
-                TransactionArgument(description, Seq[U8]),
-                TransactionArgument(price, U64),
+                TransactionArgument(recipient, Serializer.struct),  # Recipient address
+                TransactionArgument(amount, Serializer.u64),  # Amount to transfer
             ],
         )
-        return await self._submit_transaction(payload)
 
-    async def list_projects(self):
-        payload = EntryFunction(
-            f"{YOPEX_MODULE_ADDRESS}::{YOPEX_MODULE_NAME}",
-            "list_projects",
-            [],
-            [],
+        signed_transaction = await self.client.create_bcs_signed_transaction(
+            self.account, payload
         )
-        return await self._submit_transaction(payload)
-
-    async def buy_project(self, name: str):
-        payload = EntryFunction(
-            f"{YOPEX_MODULE_ADDRESS}::{YOPEX_MODULE_NAME}",
-            "buy_project",
-            [],
-            [TransactionArgument(name, Seq[U8])],
-        )
-        return await self._submit_transaction(payload)
-
-    async def _submit_transaction(self, payload: EntryFunction):
-        try:
-            txn_hash = await self.rest_client.submit_bcs_transaction(self.account, TransactionPayload(payload))
-            await self.rest_client.wait_for_transaction(txn_hash)
-            return txn_hash
-        except Exception as e:
-            print(f"Error submitting transaction: {e}")
-            return None
+        return await self.client.submit_bcs_transaction(signed_transaction)

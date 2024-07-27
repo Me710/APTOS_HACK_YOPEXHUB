@@ -3,8 +3,11 @@ from aptos_sdk.account import Account
 from aptos_sdk.client import RestClient
 from ..utils.constants import NODE_URL
 
-async def create_project(account: Account, name: str, description: str, price: int):
-    rest_client = RestClient(NODE_URL)
-    client = YopexClient(account,rest_client)
-    tx_hash = client.create_project(name, description, price)
-    print(f"Project created. Transaction hash: {tx_hash}")
+async def create_project(client: YopexClient, name: str, description: str, price: int):
+    try:
+        tx_hash = await client.create_project(name, description, price)
+        print(f"Project created successfully. Transaction hash: {tx_hash}")
+        return tx_hash
+    except Exception as e:
+        print(f"Failed to create project: {str(e)}")
+        return None
