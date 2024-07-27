@@ -2,9 +2,9 @@
 
 This repo contains two (2) POC (Prove Of Concept) implementations of APTOS blockchain to enhance [YOPEX Plateform](https://yopexhub.com).
 
-   - A Python-based Smart Contract implementation of Project creation, listing and buying amongt users on the plateform.
+   - A Python-based Smart Contract implementation of Project creation, listing and buying amongt users on the plateform with APTOS SDK.
 
-   - A Rust-based NFT creation with APTOS: It purpose is to timestamp and asure project ownership thanks to blockchain. This POC is built using Rust, WebAssembly, and the Yew framework, with integration for the Aptos blockchain.
+   - A Rust-based NFT creation with APTOS SDK: It purpose is to timestamp and asure project ownership thanks to blockchain. This POC is built using Rust, WebAssembly, and the Yew framework, with integration for the Aptos blockchain.
 
    
 
