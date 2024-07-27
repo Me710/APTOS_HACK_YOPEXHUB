@@ -5,54 +5,59 @@ use anyhow::Result;
 use wasm_bindgen_futures::spawn_local;
 use web_sys::HtmlInputElement;
 use std::rc::Rc;
+use aptos_sdk::{
+    rest_client::Client,
+    types::account_address::AccountAddress,
+};
 
 #[derive(Serialize, Deserialize, Clone, PartialEq)]
-struct Project {
+pub struct UserProfile {
     id: u64,
     name: String,
-    description: String,
+    skills: Vec<String>,
 }
 
 #[function_component(App)]
-fn app() -> Html {
-    let project = use_state(|| Project {
+pub fn app() -> Html {
+    let user_profile = use_state(|| UserProfile {
         id: 1,
         name: String::new(),
-        description: String::new(),
+        skills: Vec::new(),
     });
 
     let name_ref = use_node_ref();
-    let description_ref = use_node_ref();
+    let skill_ref = use_node_ref();
 
     let on_name_change = {
-        let project = project.clone();
+        let user_profile = user_profile.clone();
         Callback::from(move |e: Event| {
             let input: HtmlInputElement = e.target_unchecked_into();
-            project.set(Project {
+            user_profile.set(UserProfile {
                 name: input.value(),
-                ..(*project).clone()
+                ..(*user_profile).clone()
             });
         })
     };
 
-    let on_description_change = {
-        let project = project.clone();
-        Callback::from(move |e: Event| {
-            let input: HtmlInputElement = e.target_unchecked_into();
-            project.set(Project {
-                description: input.value(),
-                ..(*project).clone()
-            });
-        })
-    };
-
-    let create_nft = {
-        let project = Rc::new((*project).clone());
+    let add_skill = {
+        let user_profile = user_profile.clone();
+        let skill_ref = skill_ref.clone();
         Callback::from(move |_| {
-            let project = project.clone();
+            let skill_input = skill_ref.cast::<HtmlInputElement>().unwrap();
+            let mut updated_profile = (*user_profile).clone();
+            updated_profile.skills.push(skill_input.value());
+            user_profile.set(updated_profile);
+            skill_input.set_value("");
+        })
+    };
+
+    let create_profile = {
+        let user_profile = Rc::new((*user_profile).clone());
+        Callback::from(move |_| {
+            let user_profile = user_profile.clone();
             spawn_local(async move {
-                if let Err(e) = create_nft((*project).clone()).await {
-                    log::error!("Error creating NFT: {:?}", e);
+                if let Err(e) = create_user_profile_on_aptos((*user_profile).clone()).await {
+                    log::error!("Error creating user profile: {:?}", e);
                 }
             });
         })
@@ -60,36 +65,43 @@ fn app() -> Html {
 
     html! {
         <div>
-            <h1>{ "Aptos NFT Project" }</h1>
+            <h1>{ "YOPEX - Decentralized Talent Acquisition" }</h1>
             <input
                 ref={name_ref}
                 type="text"
-                placeholder="Project Name"
+                placeholder="Your Name"
                 onchange={on_name_change}
             />
             <input
-                ref={description_ref}
+                ref={skill_ref}
                 type="text"
-                placeholder="Project Description"
-                onchange={on_description_change}
+                placeholder="Add a Skill"
             />
-            <button onclick={create_nft}>{ "Create NFT" }</button>
-            <p>{ format!("Current Project: {} - {}", project.name, project.description) }</p>
+            <button onclick={add_skill}>{ "Add Skill" }</button>
+            <button onclick={create_profile}>{ "Create Profile on Aptos" }</button>
+            <div>
+                <h2>{ "Your Profile" }</h2>
+                <p>{ format!("Name: {}", user_profile.name) }</p>
+                <p>{ "Skills:" }</p>
+                <ul>
+                    { for user_profile.skills.iter().map(|skill| html! { <li>{ skill }</li> }) }
+                </ul>
+            </div>
         </div>
     }
 }
 
-async fn create_nft(project: Project) -> Result<()> {
-    let client = reqwest::Client::new();
-    let res = client.post("http://localhost:8080/create_nft")
-        .json(&project)
-        .send()
-        .await?;
-    if res.status().is_success() {
-        log::info!("NFT created successfully!");
-    } else {
-        log::error!("Failed to create NFT");
-    }
+async fn create_user_profile_on_aptos(user_profile: UserProfile) -> Result<()> {
+    let client = Client::new("https://fullnode.devnet.aptoslabs.com".to_string());
+
+    // Placeholder: Replace with actual account address handling
+    let account = AccountAddress::from_hex_literal("0x1")?;
+
+    log::info!("Simulating creation of user profile on Aptos for account: {:?}", account);
+    log::info!("User Profile: {:?}", user_profile);
+
+    // In a real implementation, you would create, sign, and submit a transaction here
+
     Ok(())
 }
 

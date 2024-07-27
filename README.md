@@ -58,6 +58,8 @@ This project is a web application built using Rust, WebAssembly, and the Yew fra
 2. Open `http://localhost:8080` in your browser.
 
 
+Remember to run `cargo build --target wasm32-unknown-unknown` and then use `wasm-bindgen` to generate the JavaScript bindings after making changes to your Rust code.
+
 ## Project Structure
 
 - `src/lib.rs`: Main application logic and Aptos interactions

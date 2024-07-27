@@ -18,6 +18,7 @@ anyhow = "1.0"
 wasm-bindgen-futures = "0.4"
 reqwest = { version = "0.11", features = ["json"] }
 log = "0.4"
+aptos-sdk = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "devnet" }
 
 [dependencies.web-sys]
 version = "0.3"
